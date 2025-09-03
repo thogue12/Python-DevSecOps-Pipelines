@@ -1,41 +1,65 @@
-# DevSecOps Pipeline for Python FastAPI Docker Projects
+# DevSecOps-Python-Pipeline
 
-## Overview
-This project is a **DevSecOps pipeline implemented entirely in Python**, designed to automate building, testing, security scanning, and deploying a FastAPI application packaged in Docker. Each stage of the pipeline is modularized as a Python function for clarity and reusability.
-
-The pipeline handles:
-
-- Cloning a GitHub repository containing a Python FastAPI app and Dockerfile  
-- Building a Docker image  
-- Code quality checks with **Pylint** and formatting with **Black**  
-- Unit testing with **pytest**  
-- Security scanning using **Trivy** for container vulnerabilities and **OWASP ZAP** for web application security  
-- Pushing the Docker image to **Docker Hub**  
-
-All functions are orchestrated via the `main.py` entry point, allowing seamless execution of the full pipeline.
+A modular, reusable Python-based DevSecOps pipeline for automating the build, test, security scan, and deployment of FastAPI applications in Docker. This project provides an all-in-one solution for CI/CD pipelines, container security, and code quality enforcement using Python functions.
 
 ---
 
-## Project Structure
+🌐 **Project Goals**
 
-.
-├── main.py # Entry point for the pipeline
-├── pipeline # All modular pipeline functions
-├── requirements.txt # Python dependencies
-├── README.md
-└── .gitignore
-
+- Enable engineers to automate DevSecOps pipelines through **modular Python functions**.  
+- Provide reusable patterns for CI/CD, unit testing, and container security scanning.  
+- Enforce security and compliance with integrated tools like **Trivy** and **OWASP ZAP**.  
+- Support easy extension: new pipeline steps can be added by creating a new Python file with a function and referencing it in `main.py`.
 
 ---
 
-## Setup
+🧱 **Pipeline Modules**
 
-1. **Clone this repository**  
+🔁 **Core Pipeline Jobs**
+
+- **Clone Repo**  
+  - Clones a target FastAPI GitHub repository  
+  - Module file: `clone_repo.py`  
+
+- **Build Docker Image**  
+  - Builds Docker image from the repository’s Dockerfile  
+  - Module file: `build_docker.py`  
+
+- **Lint & Format**  
+  - Runs `pylint` for static analysis  
+  - Runs `black` for code formatting  
+  - Module file: `lint_format.py`  
+
+- **Unit Testing**  
+  - Runs `pytest` for automated unit tests  
+  - Module file: `unit_test.py`  
+
+- **Trivy Scan (Dockerized)**  
+  - Runs a containerized **Trivy** image to scan Docker images for vulnerabilities  
+  - No local installation required beyond Docker  
+  - Module file: `trivy_scan.py`  
+
+- **OWASP ZAP Scan (Dockerized)**  
+  - Runs a containerized **OWASP ZAP** image to perform automated web application security tests  
+  - No local installation required beyond Docker  
+  - Module file: `owasp_zap.py`  
+
+- **Push to Docker Hub**  
+  - Pushes the Docker image to Docker Hub  
+  - Module file: `push_docker.py`  
+
+> Each module is independent and can be extended. For example, to add additional tests or steps in `unit_test.py`, simply add new functions and call them in `main.py`.
+
+---
+
+⚙️ **Setup**
+
+1. **Clone the repository**  
 ```bash
 git clone <repo-url>
 cd <repo-folder>
 
-    Create and activate a Python virtual environment
+    Create and activate a virtual environment
 
 python -m venv venv
 # Activate
@@ -43,65 +67,53 @@ source venv/bin/activate   # Linux/macOS
 # or
 venv\Scripts\activate      # Windows
 
-    Install required Python libraries
 
-Create a requirements.txt file with the following content:
-
-PyGithub
-gitpython
-docker
+Install dependencies:
 
 
-    Note: subprocess and os are standard Python libraries, so no installation is needed for them.
+    subprocess and os are standard Python libraries and require no installation.
 
-    Configure Docker and security tools
+    PyGithub
+    
+    gitpython
+
+    docker
+
+    Docker setup
 
     Ensure Docker is installed and running.
 
-    Make sure Trivy and OWASP ZAP are installed on your system or available via Docker containers.
+    No local installation of Trivy or OWASP ZAP is required — they are pulled and run as Docker containers.
 
-    Set Docker Hub credentials
-    Store credentials as environment variables or log in via Docker:
+    Authenticate with Docker Hub
 
-docker login
+    docker login
 
-Usage
+🚀 Usage
 
-Run the pipeline from main.py:
+Run the pipeline:
 
 python main.py
 
-The pipeline executes the following stages in order:
+The pipeline executes all stages in order.
+New functions or stages can be added by creating a Python file with the function and importing it in main.py.
 
-  Clone Repo – Clones a target FastAPI GitHub repository
+🔧 Extending the Pipeline
 
-  Build Docker Image – Builds the Docker image from the Dockerfile
+    Create a new Python file with the desired function.
 
-  Lint & Format – Runs pylint and black on the codebase
+    Import the function into main.py.
 
-  Unit Testing – Runs pytest
+    Call the function at the appropriate point in the pipeline.
 
-  Trivy Scan – Performs vulnerability scanning on the Docker image
+This design allows teams to easily extend or modify the DevSecOps workflow without touching other parts of the codebase.
 
-  OWASP ZAP Scan – Performs automated security testing against the FastAPI app
+💡 CI/CD & DevSecOps Tooling
 
-  Push to Docker Hub – Pushes the Docker image to your Docker Hub repository
+    Code quality enforcement: ✅ pylint, ✅ black
 
-Extending the Pipeline:
-To add a new stage or function:
+    Unit testing: ✅ pytest
 
-  Create a new Python file with the desired function (e.g., new_stage.py).
-  
-  Import the function into main.py.
-  
-  Call it at the appropriate point in the pipeline.
+    Container vulnerability scanning: ✅ Trivy (via Docker container)
 
-Contributions are welcome! To add new stages or modify existing functions:
-
-  Fork the repository
-
-  Add or modify functions in the appropriate module file
-
-  Update main.py to include the new functionality
-
-  Submit a pull request
+    Web application security testing: ✅ OWASP ZAP (via Docker container)
