@@ -1,0 +1,107 @@
+# DevSecOps Pipeline for Python FastAPI Docker Projects
+
+## Overview
+This project is a **DevSecOps pipeline implemented entirely in Python**, designed to automate building, testing, security scanning, and deploying a FastAPI application packaged in Docker. Each stage of the pipeline is modularized as a Python function for clarity and reusability.
+
+The pipeline handles:
+
+- Cloning a GitHub repository containing a Python FastAPI app and Dockerfile  
+- Building a Docker image  
+- Code quality checks with **Pylint** and formatting with **Black**  
+- Unit testing with **pytest**  
+- Security scanning using **Trivy** for container vulnerabilities and **OWASP ZAP** for web application security  
+- Pushing the Docker image to **Docker Hub**  
+
+All functions are orchestrated via the `main.py` entry point, allowing seamless execution of the full pipeline.
+
+---
+
+## Project Structure
+
+.
+├── main.py # Entry point for the pipeline
+├── pipeline # All modular pipeline functions
+├── requirements.txt # Python dependencies
+├── README.md
+└── .gitignore
+
+
+---
+
+## Setup
+
+1. **Clone this repository**  
+```bash
+git clone <repo-url>
+cd <repo-folder>
+
+    Create and activate a Python virtual environment
+
+python -m venv venv
+# Activate
+source venv/bin/activate   # Linux/macOS
+# or
+venv\Scripts\activate      # Windows
+
+    Install required Python libraries
+
+Create a requirements.txt file with the following content:
+
+PyGithub
+gitpython
+docker
+
+
+    Note: subprocess and os are standard Python libraries, so no installation is needed for them.
+
+    Configure Docker and security tools
+
+    Ensure Docker is installed and running.
+
+    Make sure Trivy and OWASP ZAP are installed on your system or available via Docker containers.
+
+    Set Docker Hub credentials
+    Store credentials as environment variables or log in via Docker:
+
+docker login
+
+Usage
+
+Run the pipeline from main.py:
+
+python main.py
+
+The pipeline executes the following stages in order:
+
+  Clone Repo – Clones a target FastAPI GitHub repository
+
+  Build Docker Image – Builds the Docker image from the Dockerfile
+
+  Lint & Format – Runs pylint and black on the codebase
+
+  Unit Testing – Runs pytest
+
+  Trivy Scan – Performs vulnerability scanning on the Docker image
+
+  OWASP ZAP Scan – Performs automated security testing against the FastAPI app
+
+  Push to Docker Hub – Pushes the Docker image to your Docker Hub repository
+
+Extending the Pipeline:
+To add a new stage or function:
+
+  Create a new Python file with the desired function (e.g., new_stage.py).
+  
+  Import the function into main.py.
+  
+  Call it at the appropriate point in the pipeline.
+
+Contributions are welcome! To add new stages or modify existing functions:
+
+  Fork the repository
+
+  Add or modify functions in the appropriate module file
+
+  Update main.py to include the new functionality
+
+  Submit a pull request
